@@ -22,8 +22,9 @@ public class Main {
 
         Controller controller = new Controller();
         controller.addProdutos();
+        boolean var = true;
 
-        while (true) {
+        while (var) {
             System.out.println("................................");
             System.out.println("      1) REGISTRAR VENDA        ");
             System.out.println("       2) ENCERRAR CAIXA        ");
@@ -40,6 +41,7 @@ public class Main {
                             break;
                         case 2:
                             controller.finalizarVenda();
+                            var = false;
                             break;
                         default:
                             System.out.println("Erro");
@@ -53,5 +55,6 @@ public class Main {
                 }
             }
         }
+        System.out.println("Caixa encerrado.");
     }
 } // MAIN

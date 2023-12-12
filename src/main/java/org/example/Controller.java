@@ -5,6 +5,7 @@ package org.example;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Controller {
     static ArrayList<Produto> listaProdutos = new ArrayList<>();
@@ -18,8 +19,8 @@ public class Controller {
     static StringBuilder nota = new StringBuilder();
 
     // HASHMAP
-    static TreeMap<Produto, Double> totaisProdutosVendidos = new TreeMap<>();
     static TreeMap<Produto, Integer> quantidadeProdutosVendidos = new TreeMap<>();
+    static TreeMap<Produto, Double> totaisProdutosVendidos = new TreeMap<>();
     static TreeMap<Integer, Integer> salvarPagamento = new TreeMap<>();
     static TreeMap<Integer, Double> salvarTotalPagamento = new TreeMap<>();
 
@@ -46,7 +47,6 @@ public class Controller {
         System.out.println("―――――――――――――――――――");
         System.out.println("| FORMAS DE PAGAMENTO UTILIZADAS |");
         imprimirPagamentos();
-        zerarTudo();
 
     }
 
@@ -86,16 +86,11 @@ public class Controller {
 
     }
 
-//FORMATAR O VALOR
+    //FORMATAR O VALOR
 //-----------------------------------------------------------------------------------------------------------------------
 //CHAMAR LISTA D PRODUTOS
 //----------------------------------------------------------------------------------------------------------------------
     // quando chama dnv na hr d add mais intens no carrinha ela add os msm produtos na lista dnv
-
-    //    public double formatarValor(double naoFormatado) {
-//        String valorFormatado = formatoMoeda.format(naoFormatado);
-//        return Double.parseDouble(valorFormatado);
-//    }
     public static StringBuilder chamaListaProdutos() {
         StringBuilder lista = new StringBuilder();
         int i = 0;
@@ -271,94 +266,126 @@ public class Controller {
     // CONTAGEM E SALVAR VENDAS
 //----------------------------------------------------------------------------------------------------------------------
     int somaA = 0;
-    double totalA = 0.0;
-
     int somaB = 0;
-    double totalB = 0.0;
-
     int somaC = 0;
-    double totalC = 0.0;
-
     int somaD = 0;
-    double totalD = 0.0;
-
     int somaE = 0;
-    double totalE = 0.0;
-
     int somaF = 0;
-    double totalF = 0.0;
 
+    public Controller() {
+    }
+
+    public int getSomaA() {
+        return somaA;
+    }
+
+    public void setSomaA(int somaA) {
+        this.somaA = somaA;
+    }
+
+    public int getSomaB() {
+        return somaB;
+    }
+
+    public void setSomaB(int somaB) {
+        this.somaB = somaB;
+    }
+
+    public int getSomaC() {
+        return somaC;
+    }
+
+    public void setSomaC(int somaC) {
+        this.somaC = somaC;
+    }
+
+    public int getSomaD() {
+        return somaD;
+    }
+
+    public void setSomaD(int somaD) {
+        this.somaD = somaD;
+    }
+
+    public int getSomaE() {
+        return somaE;
+    }
+
+    public void setSomaE(int somaE) {
+        this.somaE = somaE;
+    }
+
+    public int getSomaF() {
+        return somaF;
+    }
+
+    public void setSomaF(int somaF) {
+        this.somaF = somaF;
+    }
 
     public void contagem(int quantidade, Produto produto) {
         if (produto.equals(listaProdutos.get(0))) {
-            somaA += quantidade;
-            totalA += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalA);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaA);
-
+            setSomaA(getSomaA() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaA());
 
         } else if (produto.equals(listaProdutos.get(1))) {
-            somaB += quantidade;
-            totalB += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalB);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaB);
-
+            setSomaB(getSomaB() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaB());
 
         } else if (produto.equals(listaProdutos.get(2))) {
-            somaC += quantidade;
-            totalC += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalC);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaC);
-
+            setSomaC(getSomaC() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaC());
 
         } else if (produto.equals(listaProdutos.get(3))) {
-            somaD += quantidade;
-            totalD += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalD);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaD);
-
+            setSomaD(getSomaD() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaD());
 
         } else if (produto.equals(listaProdutos.get(4))) {
-            somaE += quantidade;
-            totalE += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalE);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaE);
-
+            setSomaE(getSomaE() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaE());
 
         } else if (produto.equals(listaProdutos.get(5))) {
-            somaF += quantidade;
-            totalF += (quantidade * produto.valor);
-            totaisProdutosVendidos.put(produto, totalF);
-            quantidadeProdutosVendidos.put(produto, quantidadeProdutosVendidos.getOrDefault(produto, 0) + somaF);
-
+            setSomaF(getSomaF() + quantidade);
+            quantidadeProdutosVendidos.put(produto, getSomaF());
         }
 
+        for (Map.Entry<Produto, Integer> tipo : quantidadeProdutosVendidos.entrySet()) {
+            Produto chave = tipo.getKey();
+            int quant = tipo.getValue();
+            // calcula e ja salva
+            totaisProdutosVendidos.put(chave, calcularTotal(chave, quant));
+        }
     }
 
 
 // IMPRIMIR VENDAS
 //----------------------------------------------------------------------------------------------------------------------
 
-    // NAO TA IMPRIMINDO NA ORDEM CERTA
-
     public static void imprimirVendas() {
-        // Convertendo TreeMap para LinkedHashMap para inverter a ordem (DECRESCENTE), da treemap com a informação q precisa estar na ordem (totais)
-        Map<Produto, Double> imprimirTotaisDecrescente = new LinkedHashMap<>(totaisProdutosVendidos);
+        //Criar uma lista Map.Entry ordenada pelos valores totais, parte q realmente ordena é do .sorted ate p reversed()
+        // o reversed inverte a ordem para ficar na ordem DECRESCENTE
+        List<Map.Entry<Produto, Double>> vendasOrdenadas = totaisProdutosVendidos.entrySet().stream()
+                .sorted(Map.Entry.<Produto, Double>comparingByValue().reversed())
+                .toList();
 
-        for (Map.Entry<Produto, Double> totais : imprimirTotaisDecrescente.entrySet()) {
-            Produto produto = totais.getKey();
-            double valorTotal = totais.getValue();
-            String valorTotalFormatado = formatoMoeda.format(valorTotal);
-
-            // trazendo info de outra treemap que tem a mesma chave (produto)
-            //int quantidade = quantidadeProdutosVendidos.get(produto);
-            double quantDouble = (valorTotal / produto.getValor());
-            int quantidade = (int) quantDouble;
+        // Imprimir as informações ordenadas
+        for (Map.Entry<Produto, Double> venda : vendasOrdenadas) {
+            Produto produto = venda.getKey();
+            double valorTotal = venda.getValue();
+            double calcularQuant = (valorTotal / produto.getValor());
+            int quantidade = (int) calcularQuant;
 
             System.out.println("――――――――――――――――――――");
-            System.out.println("   "+ produto.getDescricao() + ":  " + quantidade + "  ⎸  " + valorTotalFormatado);
+            System.out.println(produto.getDescricao() + ":  " + quantidade + "  |  " + formatoMoeda.format(valorTotal));
         }
+
         System.out.println("――――――――――――――――――――");
+        quantidadeProdutosVendidos.clear();
+    }
+
+
+    public static double calcularTotal(Produto produto, int quantidade) {
+        return produto.getValor() * quantidade;
     }
 
     // CONTAGEM POR FORMA DE PAGAMENTO E TOTAIS
@@ -372,36 +399,95 @@ public class Controller {
     int dinheiro = 0;
     double totalDin = 0.0;
 
-    // TROCQUE A CHAVE PARA UMA STRING EM VEZ D UM NUMERO
+    public int getPix() {
+        return pix;
+    }
+
+    public void setPix(int pix) {
+        this.pix = pix;
+    }
+
+    public double getTotalPix() {
+        return totalPix;
+    }
+
+    public void setTotalPix(double totalPix) {
+        this.totalPix = totalPix;
+    }
+
+    public int getCredito() {
+        return credito;
+    }
+
+    public void setCredito(int credito) {
+        this.credito = credito;
+    }
+
+    public double getTotalCred() {
+        return totalCred;
+    }
+
+    public void setTotalCred(double totalCred) {
+        this.totalCred = totalCred;
+    }
+
+    public int getDebito() {
+        return debito;
+    }
+
+    public void setDebito(int debito) {
+        this.debito = debito;
+    }
+
+    public double getTotalDeb() {
+        return totalDeb;
+    }
+
+    public void setTotalDeb(double totalDeb) {
+        this.totalDeb = totalDeb;
+    }
+
+    public int getDinheiro() {
+        return dinheiro;
+    }
+
+    public void setDinheiro(int dinheiro) {
+        this.dinheiro = dinheiro;
+    }
+
+    public double getTotalDin() {
+        return totalDin;
+    }
+
+    public void setTotalDin(double totalDin) {
+        this.totalDin = totalDin;
+    }
+
 
     public void contagemPagamentos(int formaPagamento, double valorTotal) {
         if (formaPagamento == 1) {
-            pix += 1;
-            contarPagamentos[0] = pix;
-            totalPix += valorTotal;
-            //salvarPagamento.put(1, contarPagamentos[0]);
-            salvarTotalPagamento.put(1, salvarTotalPagamento.getOrDefault(1, 0.0) + totalPix);
+            setPix(getPix() + 1);;
+            setTotalPix(getTotalPix() + valorTotal);
+            salvarPagamento.put(1, getPix());
+            salvarTotalPagamento.put(1, getTotalPix());
 
         } else if (formaPagamento == 2) {
-            credito += 1;
-            contarPagamentos[1] = credito;
-            totalCred += valorTotal;
-            //salvarPagamento.put(2, contarPagamentos[1]);
-            salvarTotalPagamento.put(2, salvarTotalPagamento.getOrDefault(2, 0.0) + totalCred);
+            setCredito(getCredito() + 1);
+            setTotalCred(getTotalCred() + valorTotal);
+            salvarPagamento.put(2, getCredito());
+            salvarTotalPagamento.put(2, getTotalCred());
 
         } else if (formaPagamento == 3) {
-            debito += 1;
-            contarPagamentos[2] = debito;
-            totalDeb += valorTotal;
-            //salvarPagamento.put(3, contarPagamentos[2]);
-            salvarTotalPagamento.put(3, salvarTotalPagamento.getOrDefault(3, 0.0) + totalDeb);
+            setDebito(getDebito() + 1);
+            setTotalDeb(getTotalDeb() + valorTotal);
+            salvarPagamento.put(3, getDebito());
+            salvarTotalPagamento.put(3, getTotalDeb());
 
         } else if (formaPagamento == 4) {
-            dinheiro += 1;
-            contarPagamentos[3] = dinheiro;
-            totalDin += valorTotal;
-            //salvarPagamento.put(4, contarPagamentos[3]);
-            salvarTotalPagamento.put(4, salvarTotalPagamento.getOrDefault(4, 0.0) + totalDin);
+            setDinheiro(getDinheiro() + 1);
+            setTotalDin(getTotalDin() + valorTotal);
+            salvarPagamento.put(4, getDinheiro());
+            salvarTotalPagamento.put(4, getTotalDin());
         }
 
     }
@@ -411,66 +497,54 @@ public class Controller {
 
     // NAO TA IMPRIMINDO NA ORDEM CERTA
     // ou nem imprime, tasomando errado os valores totais tb
-
     public void imprimirPagamentos() {
-        // Convertendo TreeMap para LinkedHashMap para inverter a ordem (CRESCENTE), da treemap com a informação q precisa estar na ordem (totais)
-        // descending.map = CRESCENTE
-        Map<Integer, Double> imprimirTotaisCrescente = new LinkedHashMap<>(salvarTotalPagamento.descendingMap());
+       // lista map entry ordenada pelos valores totais q acompanham as chaves
+        List<Map.Entry<Integer, Double>> pagamentosOrdenados = salvarTotalPagamento.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Double>comparingByValue()).toList();
 
-        for (Map.Entry<Integer, Double> totais : imprimirTotaisCrescente.entrySet()) {
+        for (Map.Entry<Integer, Double> totais : pagamentosOrdenados) {
             int chave = totais.getKey();
             double valorTotal = totais.getValue();
-           // String valorTotalFormatado = formatoMoeda.format(valorTotal);
+           int quantidade = salvarPagamento.get(chave);
 
-            // trazendo info de outra treemap que tem a mesma chave (produto)
-
-            // N TA DANDO CERTOOOOOOOOOOOOOOOOOOOOOOO
-            //int quantidade = salvarPagamento.get(chave);
-
-            //valorTotalFormatado
-            //System.out.println("―――――――――――――――――――");
-            //                System.out.println("   " + chave + ":  " + quantidade + "    |  " + formatoMoeda.format(totalPix));
-
-            int quantidade = 0;
             String pagamento = "a";
-            if (chave == 1) {
-                quantidade = pix;
-                pagamento = "pix";
+            switch (chave) {
+                case 1:
+                    pagamento = "pix";
+                    break;
 
-            } else if (chave == 2) {
-               quantidade = credito;
-               pagamento = "crédito";
+                case 2:
+                    pagamento = "crédito";
+                    break;
 
-            } else if (chave == 3) {
-                quantidade = debito;
-                pagamento = "débito";
+                case 3:
+                    pagamento = "débito";
+                    break;
 
-            } else if (chave == 4) {
-                quantidade = dinheiro;
-                pagamento = "dinheiro";
+                case 4:
+                    pagamento = "dinheiro";
+                    break;
             }
             System.out.println("―――――――――――――――――――");
-            System.out.println("   " + pagamento + ":  " + quantidade + "    |  " + formatoMoeda.format(valorTotal));
+            System.out.println(pagamento + ":  " + quantidade + "    |  " + formatoMoeda.format(valorTotal));
 
         }
         System.out.println("―――――――――――――――――――");
+        salvarTotalPagamento.clear();
+        salvarPagamento.clear();
+        pix = 0;
+        totalPix = 0.0;
+        credito = 0;
+        totalCred = 0.0;
+        debito = 0;
+        totalDeb = 0.0;
+        dinheiro = 0;
+        totalDin = 0.0;
     }
 
 
     // ZERAR TUDO
 //----------------------------------------------------------------------------------------------------------------------
-    public void zerarTudo() {
-        somaA = 0;
-        somaB = 0;
-        somaC = 0;
-        somaD = 0;
-        somaE = 0;
-        somaF = 0;
-        pix = 0;
-        credito = 0;
-        debito = 0;
-        dinheiro = 0;
 
-    }
 
 } // CONTROLLER
